@@ -5,10 +5,10 @@ import Model.Task;
 import Util.DataBaseConnection;
 import java.sql.Connection;
 import java.sql.Date;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +36,10 @@ public class TaskController {
             pstmt.setString(3, task.getDescription());
             pstmt.setBoolean(4, task.getStatus());
             pstmt.setString(5, task.getNotes());
-            pstmt.setDate(6, new Date(task.getDeadline().getTime()));
-            pstmt.setDate(7, new Date(task.getCreationDate().getTime()));
-            pstmt.setDate(8, new Date(task.getUpdateDate().getTime()));
+            Long deadline = task.getDeadline().getTime();
+            pstmt.setDate(6, new Date(deadline));
+            pstmt.setDate(7, Date.valueOf(LocalDate.now()));
+            pstmt.setDate(8, Date.valueOf(LocalDate.now()));
             pstmt.execute();
         }
         catch (Exception e) {

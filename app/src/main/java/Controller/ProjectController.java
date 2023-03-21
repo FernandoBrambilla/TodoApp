@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +28,8 @@ public class ProjectController {
             pstmt = connection.prepareStatement(querySave);
             pstmt.setString(1, project.getName());
             pstmt.setString(2, project.getDescription());
-            pstmt.setDate(3, new Date(project.getCreationDate().getTime()));
-            pstmt.setDate(4, new Date(project.getUpdateDate().getTime()));
+            pstmt.setDate(3, Date.valueOf(LocalDate.now()));
+            pstmt.setDate(4, Date.valueOf(LocalDate.now()));
             pstmt.execute();
                  
         } catch (Exception e) {
