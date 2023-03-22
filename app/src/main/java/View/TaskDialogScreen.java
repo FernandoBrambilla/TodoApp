@@ -3,10 +3,16 @@ package View;
 import Controller.TaskController;
 import Model.Project;
 import Model.Task;
+import java.awt.Color;
+import static java.awt.Color.RED;
+import java.awt.Font;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
 
 public class TaskDialogScreen extends javax.swing.JDialog {
 
@@ -25,6 +31,26 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         this.project = project;
     }
 
+   
+    
+    public  Border notValidBorder(String title){
+        title = title + "          *Campo Obrigatório";
+        Border lineBorder = BorderFactory.createLineBorder(RED);
+        Font titleFont = new Font("UBUNTU", Font.PLAIN, 16);
+        TitledBorder titleBorder = BorderFactory.createTitledBorder(lineBorder,
+                title,TitledBorder.LEFT, 0, titleFont, RED);
+         return titleBorder;
+        }
+    
+    public  Border isValidBorder(String title){
+        
+        Border lineBorder = BorderFactory.createLineBorder(Color.black);
+        Font titleFont = new Font("UBUNTU", Font.PLAIN, 16);
+        TitledBorder titleBorder = BorderFactory.createTitledBorder(lineBorder,
+                title,TitledBorder.LEFT, 0, titleFont, Color.BLACK);
+         return titleBorder;
+        }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -50,6 +76,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         title.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
         title.setText("Tarefas");
+        title.setAutoscrolls(true);
 
         taskSave.setForeground(new java.awt.Color(255, 255, 255));
         taskSave.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -159,20 +186,39 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     private void taskSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taskSaveMouseClicked
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            Task task = new Task();
-            task.setIdProject(2);
-            task.setName(fieldName.getText());
-            task.setDescription(fieldDescription.getText());
-            Date deadline = null;
-            task.setDeadline(deadline = dateFormat.parse(fieldDeadline.getText()));     
-            task.setNotes(fieldNotes.getText());
-            task.setStatus(false);
-            controller.save(task);
-           JOptionPane.showMessageDialog(null, "Tarefa salva com sucesso!");
+            if(fieldName.getText().equals("")){
+               fieldName.setBorder(notValidBorder("Nome"));
+            }
+            else{
+                fieldName.setBorder(isValidBorder("Nome"));
+            }
+            if(fieldDeadline.getText().equals("")){
+                fieldDeadline.setBorder(notValidBorder("Pazo"));
+            }
+            else{
+                fieldDeadline.setBorder(isValidBorder("Pazo"));
+            }
+           
+            
+            if(fieldName.isValid()&&fieldDeadline.isValid()){
+                Task task = new Task();
+                task.setIdProject(project.getId());
+                task.setName(fieldName.getText());
+                task.setDescription(fieldDescription.getText());
+                Date deadline = null;
+                task.setDeadline(deadline = dateFormat.parse(fieldDeadline.getText()));     
+                task.setNotes(fieldNotes.getText());
+                task.setStatus(false);
+                controller.save(task);
+                JOptionPane.showMessageDialog(null, "Tarefa salva com sucesso!");
+                this.dispose();
+            }
+           
+        
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
-        }
-        this.dispose();
+            JOptionPane.showMessageDialog(rootPane, "Prencha os Campos Obrigatórios");
+    }
+        
     }//GEN-LAST:event_taskSaveMouseClicked
 
     /**

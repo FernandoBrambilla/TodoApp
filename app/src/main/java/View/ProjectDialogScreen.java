@@ -126,16 +126,22 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
     //botão salvar projeto
     private void projectSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_projectSaveMouseClicked
         try{
-            Project project = new Project();
-            project.setName(fieldName.getText());
-            project.setDescription(fieldDescription.getText());
-            controller.save(project);
-            JOptionPane.showMessageDialog(null, "Projeto salvo com sucesso!");
+            if(!fieldName.getText().isEmpty()){
+                Project project = new Project();
+                project.setName(fieldName.getText());
+                project.setDescription(fieldDescription.getText());
+                controller.save(project);
+                JOptionPane.showMessageDialog(null, "Projeto salvo com sucesso!");
+                this.dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(rootPane,"Campo Nome é obrigatório!");
+            }
         }
         catch(Exception e){
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
-        this.dispose();
+        
     }//GEN-LAST:event_projectSaveMouseClicked
 
     public static void main(String args[]) {
