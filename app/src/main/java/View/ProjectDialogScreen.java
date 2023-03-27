@@ -2,7 +2,12 @@ package View;
 
 import Controller.ProjectController;
 import Model.Project;
+import static java.awt.Color.RED;
+import java.awt.Font;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 public class ProjectDialogScreen extends javax.swing.JDialog {
 
@@ -33,9 +38,7 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
         jScrollPane1.setViewportView(jTextArea1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(600, 400));
-        setMinimumSize(new java.awt.Dimension(600, 400));
-        setPreferredSize(new java.awt.Dimension(600, 400));
+        setPreferredSize(new java.awt.Dimension(600, 500));
         setResizable(false);
 
         Header.setBackground(new java.awt.Color(0, 153, 102));
@@ -117,15 +120,29 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
                 .addComponent(Header, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(ProjectData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addGap(51, 51, 51))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+     
+    public  Border notValidBorder(String title){
+        title = title + "          *Campo Obrigatório";
+        Border lineBorder = BorderFactory.createLineBorder(RED);
+        Font titleFont = new Font("UBUNTU", Font.PLAIN, 16);
+        TitledBorder titleBorder = BorderFactory.createTitledBorder(lineBorder,
+                title,TitledBorder.LEFT, 0, titleFont, RED);
+         return titleBorder;
+        }
+    
     //botão salvar projeto
     private void projectSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_projectSaveMouseClicked
         try{
+            if(fieldName.getText().equals("")){
+               fieldName.setBorder(notValidBorder("Nome"));
+            }
+                                   
             if(!fieldName.getText().isEmpty()){
                 Project project = new Project();
                 project.setName(fieldName.getText());
@@ -134,12 +151,9 @@ public class ProjectDialogScreen extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(null, "Projeto salvo com sucesso!");
                 this.dispose();
             }
-            else{
-                JOptionPane.showMessageDialog(rootPane,"Campo Nome é obrigatório!");
-            }
         }
         catch(Exception e){
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            JOptionPane.showMessageDialog(rootPane,"Prencha o Campo Obrigatório!");
         }
         
     }//GEN-LAST:event_projectSaveMouseClicked

@@ -11,10 +11,13 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultListModel;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-
 
 public class MainScreen extends javax.swing.JFrame {
     
@@ -41,6 +44,7 @@ public class MainScreen extends javax.swing.JFrame {
         ProjectPanel = new javax.swing.JPanel();
         labelProject = new javax.swing.JLabel();
         labelProjectAdd = new javax.swing.JLabel();
+        labelProjectRemove = new javax.swing.JLabel();
         TaskPanel = new javax.swing.JPanel();
         labelTasks = new javax.swing.JLabel();
         labelTasksAdd = new javax.swing.JLabel();
@@ -78,7 +82,7 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGroup(HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(SubTitle, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
                     .addComponent(Title, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(489, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         HeaderLayout.setVerticalGroup(
             HeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,22 +109,32 @@ public class MainScreen extends javax.swing.JFrame {
             }
         });
 
+        labelProjectRemove.setIcon(new javax.swing.ImageIcon(getClass().getResource("/delete.png"))); // NOI18N
+        labelProjectRemove.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelProjectRemoveMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout ProjectPanelLayout = new javax.swing.GroupLayout(ProjectPanel);
         ProjectPanel.setLayout(ProjectPanelLayout);
         ProjectPanelLayout.setHorizontalGroup(
             ProjectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ProjectPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(labelProject, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelProject, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
                 .addComponent(labelProjectAdd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(labelProjectRemove)
                 .addContainerGap())
         );
         ProjectPanelLayout.setVerticalGroup(
             ProjectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ProjectPanelLayout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
                 .addGroup(ProjectPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(labelProjectRemove)
                     .addComponent(labelProjectAdd)
                     .addComponent(labelProject, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(16, 16, 16))
@@ -163,6 +177,7 @@ public class MainScreen extends javax.swing.JFrame {
         );
 
         ProjectList.setBackground(new java.awt.Color(255, 255, 255));
+        ProjectList.setPreferredSize(new java.awt.Dimension(250, 242));
         ProjectList.setLayout(new java.awt.BorderLayout());
 
         projectsList.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
@@ -246,7 +261,7 @@ public class MainScreen extends javax.swing.JFrame {
         emptyList.setLayout(emptyListLayout);
         emptyListLayout.setHorizontalGroup(
             emptyListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(labelSubltitle, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+            .addComponent(labelSubltitle, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
             .addComponent(labelTitle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(emptyListLayout.createSequentialGroup()
                 .addContainerGap()
@@ -274,11 +289,11 @@ public class MainScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ProjectList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ProjectPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(ProjectList, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ProjectPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(TaskPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -310,7 +325,7 @@ public class MainScreen extends javax.swing.JFrame {
       });
       
     }//GEN-LAST:event_labelProjectAddMouseClicked
-
+    // botao add tarefa
     private void labelTasksAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelTasksAddMouseClicked
        TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
        int projecIndex = projectsList.getSelectedIndex();
@@ -328,28 +343,61 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_labelTasksAddMouseClicked
 
     private void tableTasksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableTasksMouseClicked
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         int rowIndex = tableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = tableTasks.columnAtPoint(evt.getPoint());
-        Task task = tasksModel.getTasksList().get(rowIndex);
+        int projectIndex = projectsList.getSelectedIndex();
+        Task task = tasksModel.getTasksList().get(projectIndex);
+        
+        
+        Project project = (Project) projectsModel.get(projectIndex);
         switch(columnIndex){
+            //Status
             case 3:
-                
                 taskController.update(task);
-                break;
+            break;
+            
+            //editar
             case 4:
+                TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
+                taskDialogScreen.editTask(task);
+                taskDialogScreen.setVisible(true);
                 
-                break;
-             case 5:
-                taskController.removeById(task.getId());
-                tasksModel.getTasksList().remove(task);
-                int projectIndex = projectsList.getSelectedIndex();
-                Project project = (Project) projectsModel.get(projectIndex);
-                 loadTasks(project.getId());
+                {
+                    try {
+                        String name = taskDialogScreen.getFieldName().getText();
+                        String description = taskDialogScreen.getFieldDescription().getText();
+                        String deadline = taskDialogScreen.getFieldDeadline().getText();
+                        String notes = taskDialogScreen.getFieldNotes().getText();
+                        task.setName(name);
+                        task.setDescription(description);
+                        task.setDeadline(dateFormat.parse(deadline));
+                        task.setNotes(notes);                   
+                        taskController.update(task);
+                        JOptionPane.showMessageDialog(ProjectPanel, "Tarefa editada com Sucesso!");
+                        loadTasks(project.getId());
                         
-                break;
-            case 6:
-                
-                break;
+                        
+                    }
+                    catch (ParseException ex) {
+                        JOptionPane.showMessageDialog(ProjectPanel, "Erro ao editar Tarefa!");
+                    }
+                }
+
+            break;  
+            
+            //excluir    
+            case 5:
+                int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza "
+                         + "que deseja excluir esta tarefa?");
+                if(resposta==0){
+                    taskController.removeById(task.getId());
+                    tasksModel.getTasksList().remove(task);
+                    loadTasks(project.getId());
+                    JOptionPane.showMessageDialog(null, "Tarefa excluída com sucesso!");
+                }
+            break;
+            
                 
         }
         
@@ -362,6 +410,23 @@ public class MainScreen extends javax.swing.JFrame {
        
         
     }//GEN-LAST:event_projectsListMouseClicked
+
+    private void labelProjectRemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelProjectRemoveMouseClicked
+        int projectIndex = projectsList.getSelectedIndex();
+        Project project = (Project)projectsModel.get(projectIndex);
+        if(tasksModel.getRowCount()!=0){
+            JOptionPane.showMessageDialog(null, "Este projeto não pode ser Exluído,"
+                    + " ainda há tarefas.");
+        }
+        else{
+            int resposta = JOptionPane.showConfirmDialog(null,"Tem certeza "
+                    + "que desja excluir o projeto: "+ project.getName()+" ?");
+            if(resposta== 0){
+                projectController.removeById(project.getId());
+            loadProjects();
+            }
+        }
+    }//GEN-LAST:event_labelProjectRemoveMouseClicked
     private void showJTableTasks (boolean hasTasks){
         if (hasTasks){
             if(emptyList.isVisible()){
@@ -383,11 +448,7 @@ public class MainScreen extends javax.swing.JFrame {
         }
     }
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Java Swing".equals(info.getName())) {
@@ -404,9 +465,7 @@ public class MainScreen extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             
             public void run() {
@@ -489,6 +548,7 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JLabel labelIcon;
     private javax.swing.JLabel labelProject;
     private javax.swing.JLabel labelProjectAdd;
+    private javax.swing.JLabel labelProjectRemove;
     private javax.swing.JLabel labelSubltitle;
     private javax.swing.JLabel labelTasks;
     private javax.swing.JLabel labelTasksAdd;

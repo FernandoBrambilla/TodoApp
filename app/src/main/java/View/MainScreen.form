@@ -30,12 +30,12 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="ProjectList" max="32767" attributes="0"/>
-                  <Component id="ProjectPanel" max="32767" attributes="0"/>
+                  <Component id="ProjectList" min="-2" pref="375" max="-2" attributes="0"/>
+                  <Component id="ProjectPanel" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="jPanel5" pref="744" max="32767" attributes="0"/>
+                  <Component id="jPanel5" max="32767" attributes="0"/>
                   <Component id="TaskPanel" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -78,7 +78,7 @@
                       <Component id="SubTitle" pref="462" max="32767" attributes="0"/>
                       <Component id="Title" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="489" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -134,9 +134,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="labelProject" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="labelProject" min="-2" pref="162" max="-2" attributes="0"/>
+                  <EmptySpace pref="125" max="32767" attributes="0"/>
                   <Component id="labelProjectAdd" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="labelProjectRemove" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -144,8 +146,9 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="labelProjectRemove" min="-2" max="-2" attributes="0"/>
                       <Component id="labelProjectAdd" min="-2" max="-2" attributes="0"/>
                       <Component id="labelProject" min="-2" pref="31" max="-2" attributes="0"/>
                   </Group>
@@ -178,6 +181,16 @@
           </Properties>
           <Events>
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelProjectAddMouseClicked"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="labelProjectRemove">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/delete.png"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelProjectRemoveMouseClicked"/>
           </Events>
         </Component>
       </SubComponents>
@@ -246,6 +259,9 @@
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[250, 242]"/>
         </Property>
       </Properties>
 
@@ -361,7 +377,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="labelSubltitle" alignment="0" pref="744" max="32767" attributes="0"/>
+                  <Component id="labelSubltitle" alignment="0" pref="719" max="32767" attributes="0"/>
                   <Component id="labelTitle" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>

@@ -5,11 +5,17 @@ import Model.Project;
 import Model.Task;
 import java.awt.Color;
 import static java.awt.Color.RED;
+import java.awt.Dialog;
 import java.awt.Font;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.BorderFactory;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -18,6 +24,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
 
     TaskController controller;
     Project project;
+    Task task;
     
     
     public TaskDialogScreen(java.awt.Frame parent, boolean modal) {
@@ -25,14 +32,66 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         initComponents();
         controller = new TaskController();
         
+        
+    }
+
+    public JFormattedTextField getFieldDeadline() {
+        return fieldDeadline;
+    }
+
+    public void setFieldDeadline(JFormattedTextField fieldDeadline) {
+        this.fieldDeadline = fieldDeadline;
+    }
+
+    public JTextArea getFieldDescription() {
+        return fieldDescription;
+    }
+
+    public void setFieldDescription(JTextArea fieldDescription) {
+        this.fieldDescription = fieldDescription;
+    }
+
+    public JTextField getFieldName() {
+        return fieldName;
+    }
+
+    public void setFieldName(JTextField fieldName) {
+        this.fieldName = fieldName;
+    }
+
+    public JTextArea getFieldNotes() {
+        return fieldNotes;
+    }
+
+    public void setFieldNotes(JTextArea fieldNotes) {
+        this.fieldNotes = fieldNotes;
     }
 
     public void setProject(Project project) {
         this.project = project;
     }
 
-   
+    public Font fontEdit(){
+       Font font = new Font("UBUNTU", Font.BOLD, 18);
+        return font;
+    }
     
+    public void editTask(Task task){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        fieldName.setText(task.getName());
+        fieldName.setForeground(Color.GRAY);
+        fieldName.setFont(fontEdit());
+        fieldDescription.setText(task.getDescription());
+        fieldDescription.setForeground(Color.GRAY);
+        fieldDescription.setFont(fontEdit());
+        fieldDeadline.setValue(dateFormat.format(task.getDeadline()));
+        fieldDeadline.setForeground(Color.GRAY);
+        fieldDeadline.setFont(fontEdit());
+        fieldNotes.setText(task.getNotes());
+        fieldNotes.setForeground(Color.GRAY);
+        fieldNotes.setFont(fontEdit());
+    }
+
     public  Border notValidBorder(String title){
         title = title + "          *Campo Obrigatório";
         Border lineBorder = BorderFactory.createLineBorder(RED);
@@ -42,16 +101,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
          return titleBorder;
         }
     
-    public  Border isValidBorder(String title){
-        
-        Border lineBorder = BorderFactory.createLineBorder(Color.black);
-        Font titleFont = new Font("UBUNTU", Font.PLAIN, 16);
-        TitledBorder titleBorder = BorderFactory.createTitledBorder(lineBorder,
-                title,TitledBorder.LEFT, 0, titleFont, Color.BLACK);
-         return titleBorder;
-        }
-    
-    
+      
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -123,7 +173,11 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         panelDescription.setViewportView(fieldDescription);
 
         fieldDeadline.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Prazo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 0, 14))); // NOI18N
-        fieldDeadline.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        try {
+            fieldDeadline.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         fieldNotes.setColumns(20);
         fieldNotes.setFont(new java.awt.Font("Ubuntu", 0, 14)); // NOI18N
@@ -186,21 +240,16 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     private void taskSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taskSaveMouseClicked
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         try {
+            /*
             if(fieldName.getText().equals("")){
                fieldName.setBorder(notValidBorder("Nome"));
-            }
-            else{
-                fieldName.setBorder(isValidBorder("Nome"));
             }
             if(fieldDeadline.getText().equals("")){
                 fieldDeadline.setBorder(notValidBorder("Pazo"));
             }
-            else{
-                fieldDeadline.setBorder(isValidBorder("Pazo"));
-            }
-           
-            
-            if(fieldName.isValid()&&fieldDeadline.isValid()){
+               */      
+            if(!fieldName.getText().equals("")&&!fieldDeadline.getText().equals("")){
+              
                 Task task = new Task();
                 task.setIdProject(project.getId());
                 task.setName(fieldName.getText());
@@ -217,14 +266,15 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "Prencha os Campos Obrigatórios");
+          
     }
         
     }//GEN-LAST:event_taskSaveMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+  
+    
+    
+      public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
