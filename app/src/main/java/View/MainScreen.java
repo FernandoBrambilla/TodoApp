@@ -339,7 +339,7 @@ public class MainScreen extends javax.swing.JFrame {
                loadTasks(project.getId());
              }
        });
-        
+     
     }//GEN-LAST:event_labelTasksAddMouseClicked
 
     private void tableTasksMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableTasksMouseClicked
@@ -347,10 +347,9 @@ public class MainScreen extends javax.swing.JFrame {
         int rowIndex = tableTasks.rowAtPoint(evt.getPoint());
         int columnIndex = tableTasks.columnAtPoint(evt.getPoint());
         int projectIndex = projectsList.getSelectedIndex();
-        Task task = tasksModel.getTasksList().get(projectIndex);
-        
-        
+        Task task = tasksModel.getTasksList().get(rowIndex);
         Project project = (Project) projectsModel.get(projectIndex);
+        
         switch(columnIndex){
             //Status
             case 3:
@@ -362,30 +361,31 @@ public class MainScreen extends javax.swing.JFrame {
                 TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
                 taskDialogScreen.editTask(task);
                 taskDialogScreen.setVisible(true);
-                
                 {
                     try {
-                        String name = taskDialogScreen.getFieldName().getText();
-                        String description = taskDialogScreen.getFieldDescription().getText();
-                        String deadline = taskDialogScreen.getFieldDeadline().getText();
-                        String notes = taskDialogScreen.getFieldNotes().getText();
-                        task.setName(name);
-                        task.setDescription(description);
-                        task.setDeadline(dateFormat.parse(deadline));
-                        task.setNotes(notes);                   
-                        taskController.update(task);
-                        JOptionPane.showMessageDialog(ProjectPanel, "Tarefa editada com Sucesso!");
-                        loadTasks(project.getId());
-                        
+                                               
+                            String name = taskDialogScreen.getFieldName().getText();
+                            String description = taskDialogScreen.getFieldDescription().getText();
+                            String deadline = taskDialogScreen.getFieldDeadline().getText();
+                            String notes = taskDialogScreen.getFieldNotes().getText();
+                            task.setName(name);
+                            task.setDescription(description);
+                            task.setDeadline(dateFormat.parse(deadline));
+                            task.setNotes(notes);                   
+                            taskController.update(task);
+                            loadTasks(project.getId());
+                            this.dispose();
+                            
+                    }
+                    
+                        catch (ParseException ex) {
+                       JOptionPane.showMessageDialog(ProjectPanel, "Erro ao editar Tarefa.");
                         
                     }
-                    catch (ParseException ex) {
-                        JOptionPane.showMessageDialog(ProjectPanel, "Erro ao editar Tarefa!");
-                    }
-                }
+                
 
             break;  
-            
+                }
             //excluir    
             case 5:
                 int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza "
@@ -404,11 +404,11 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_tableTasksMouseClicked
 
     private void projectsListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_projectsListMouseClicked
-        int projectIndex = projectsList.getSelectedIndex();
-        Project project = (Project)projectsModel.get(projectIndex);
-        loadTasks(project.getId());
-       
         
+               int projectIndex = projectsList.getSelectedIndex();
+               Project project = (Project) projectsModel.get(projectIndex);
+               loadTasks(project.getId());
+       
     }//GEN-LAST:event_projectsListMouseClicked
 
     private void labelProjectRemoveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelProjectRemoveMouseClicked

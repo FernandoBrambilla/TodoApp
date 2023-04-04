@@ -3,17 +3,18 @@ package View;
 import Controller.TaskController;
 import Model.Project;
 import Model.Task;
+import Util.TaskTableModel;
 import java.awt.Color;
 import static java.awt.Color.RED;
-import java.awt.Dialog;
 import java.awt.Font;
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
@@ -26,13 +27,10 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     Project project;
     Task task;
     
-    
     public TaskDialogScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         controller = new TaskController();
-        
-        
     }
 
     public JFormattedTextField getFieldDeadline() {
@@ -70,9 +68,10 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     public void setProject(Project project) {
         this.project = project;
     }
+    
 
     public Font fontEdit(){
-       Font font = new Font("UBUNTU", Font.BOLD, 18);
+       Font font = new Font("UBUNTU", Font.BOLD, 16);
         return font;
     }
     
@@ -91,6 +90,11 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         fieldNotes.setForeground(Color.GRAY);
         fieldNotes.setFont(fontEdit());
     }
+    
+        
+    public boolean fieldsIsEmpty(){
+        return this.fieldName.getText().isEmpty() && this.fieldDeadline.getText().isEmpty();
+    }
 
     public  Border notValidBorder(String title){
         title = title + "          *Campo Obrigatório";
@@ -101,7 +105,9 @@ public class TaskDialogScreen extends javax.swing.JDialog {
          return titleBorder;
         }
     
-      
+     
+   
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -236,45 +242,44 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     
+    public void taskSave(){
+         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            while (fieldName.getText().isEmpty()|| this.fieldDeadline.getValue()== null) {  
+                fieldName.setBorder(notValidBorder("Nome"));
+                fieldDeadline.setBorder(notValidBorder("Prazo"));
+                return;
+            }
+            Task task = new Task();
+            task.setIdProject(project.getId());
+            task.setName(fieldName.getText());
+            task.setDescription(fieldDescription.getText());
+            Date deadline = null;
+            task.setDeadline(deadline = dateFormat.parse(fieldDeadline.getText()));     
+            task.setNotes(fieldNotes.getText());
+            task.setStatus(false);
+            controller.save(task);
+            JOptionPane.showMessageDialog(null, "Tarefa salva com sucesso!");
+            
+            this.dispose();        
+        } 
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }
+    
+    
+    
     //botão salvar tarefa
     private void taskSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taskSaveMouseClicked
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            /*
-            if(fieldName.getText().equals("")){
-               fieldName.setBorder(notValidBorder("Nome"));
-            }
-            if(fieldDeadline.getText().equals("")){
-                fieldDeadline.setBorder(notValidBorder("Pazo"));
-            }
-               */      
-            if(!fieldName.getText().equals("")&&!fieldDeadline.getText().equals("")){
+          if(task.getId()){
               
-                Task task = new Task();
-                task.setIdProject(project.getId());
-                task.setName(fieldName.getText());
-                task.setDescription(fieldDescription.getText());
-                Date deadline = null;
-                task.setDeadline(deadline = dateFormat.parse(fieldDeadline.getText()));     
-                task.setNotes(fieldNotes.getText());
-                task.setStatus(false);
-                controller.save(task);
-                JOptionPane.showMessageDialog(null, "Tarefa salva com sucesso!");
-                this.dispose();
-            }
-           
-        
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "Prencha os Campos Obrigatórios");
-          
-    }
-        
+              
+              
+          }
     }//GEN-LAST:event_taskSaveMouseClicked
 
-  
-    
-    
-      public static void main(String args[]) {
+        public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

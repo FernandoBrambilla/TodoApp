@@ -13,7 +13,8 @@ public class Task {
     private Date creationDate;
     private Date updateDate;
 
-    public Task(int id, int idProject, String name, String description, String notes, boolean status, Date deadline, Date creationDate, Date updateDate) {
+    public Task(int id, int idProject, String name, String description, String notes,
+            boolean status, Date deadline, Date creationDate, Date updateDate) {
         this.id = id;
         this.idProject = idProject;
         this.name = name;
